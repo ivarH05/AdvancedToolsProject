@@ -39,9 +39,9 @@ public class ObjectSpawner : MonoBehaviour
         }
         loopEnd:
 
-        //SetupIndividualObjects(positions);
+        SetupIndividualObjects(positions);
         //SetupGPUInstancing(positions);
-        SetupCombinedMesh(positions);
+        //SetupCombinedMesh(positions);
     }
 
     private void Update()
@@ -114,7 +114,7 @@ public class ObjectSpawner : MonoBehaviour
     private void OnDestroy()
     {
         var filter = gameObject.GetComponent<MeshFilter>();
-
-        filter.sharedMesh.Clear();
+        if(filter)
+            filter.sharedMesh.Clear();
     }
 }
