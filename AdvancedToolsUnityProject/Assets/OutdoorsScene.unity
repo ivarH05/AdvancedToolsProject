@@ -417,8 +417,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4016cbc2a62b8b14e8b4de913efbaafd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 8194648447094557675, guid: e9798cb0c00fb234c84d8c536f08cab7, type: 3}
-  mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  prefab: {fileID: 8194648447094557675, guid: 27ee8bbbc56ba614394ceaa51d5d1316, type: 3}
+  mesh: {fileID: -4532923877234417788, guid: 4c3350026324e0344b737b5c7f54f34f, type: 3}
   material: {fileID: 2100000, guid: 24ad923be8aab714c81d5ecba7b249df, type: 2}
 --- !u!4 &1496783289
 Transform:
@@ -464,10 +464,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f2d2cb9558c4b949a29bc9c6073a2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  incemental: 250
-  limit: 50000
+  incemental: 100
+  limit: 10000
   startAmount: 0
-  fileName: Statistics_CombinedMesh
+  fileName: Statistics_15K_CombinedMesh
 --- !u!4 &1510502136
 Transform:
   m_ObjectHideFlags: 0

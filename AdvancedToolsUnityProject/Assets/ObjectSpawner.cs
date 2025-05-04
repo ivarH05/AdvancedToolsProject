@@ -54,17 +54,23 @@ public class ObjectSpawner : MonoBehaviour
         Vector3[] verts = new Vector3[spawnCount * mesh.vertexCount];
         List<int> tris = new List<int>(spawnCount * mesh.triangles.Length);
         int counter = 0;
+
+        var baseVerts = mesh.vertices;
+        var baseTris = mesh.triangles;
+        int vertCount = baseVerts.Length;
+        int triCount = baseTris.Length;
+
         for (int i = 0; i < positions.Length; i++)
         {
-            for (int j = 0; j < mesh.vertexCount; j++)
+            for (int j = 0; j < vertCount; j++)
             {
-                verts[counter] = mesh.vertices[j] + positions[i];
+                verts[counter] = baseVerts[j] + positions[i];
                 counter++;
             }
 
-            for (int k = 0; k < mesh.triangles.Length; k++)
+            for (int k = 0; k < triCount; k++)
             {
-                tris.Add(mesh.triangles[k] + i * mesh.vertices.Length);
+                tris.Add(baseTris[k] + i * vertCount);
             }
         }
 
@@ -103,5 +109,12 @@ public class ObjectSpawner : MonoBehaviour
     void SummonObject(Vector3 position)
     {
         Instantiate(prefab, position, Quaternion.identity);
+    }
+
+    private void OnDestroy()
+    {
+        var filter = gameObject.GetComponent<MeshFilter>();
+
+        filter.sharedMesh.Clear();
     }
 }
