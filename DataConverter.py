@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 
 path = f"{Path(__file__).parent}/AdvancedToolsUnityProject/Assets/Data"
-folders = {"15K_CombinedMesh", "15K_GPUInstanced", "15K_IndividualObjects"}
+folders = {"500Vert_CombinedMesh", "500Vert_GPUInstanced", "500Vert_IndividualObjects"}
 
 def ConvertDataFolder(root_folder, name):
     NewData = [["Object count", "Average FPS"]]
