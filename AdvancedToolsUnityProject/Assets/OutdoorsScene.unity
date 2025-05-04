@@ -466,7 +466,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   incemental: 100
   limit: 10000
-  startAmount: 0
+  startAmount: 5000
   fileName: Statistics_15K_CombinedMesh
 --- !u!4 &1510502136
 Transform:
