@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Globalization;
 using UnityEngine.SceneManagement;
+using UnityEngine.Profiling;
 
 public class FrameDataLogger : MonoBehaviour
 {
@@ -16,8 +17,9 @@ public class FrameDataLogger : MonoBehaviour
     public int incemental = 100;
     public int limit = 10000;
     public int startAmount = 0;
+    public ObjectSpawner spawner;
 
-    public string fileName = "Statistics_IndividualObjects";
+    public string fileName = "Statistics_Version2";
 
     void Start()
     {
@@ -25,11 +27,12 @@ public class FrameDataLogger : MonoBehaviour
             ObjectSpawner.spawnCount = startAmount;
 
         TimeOffset = Time.time;
+        fileName = $"{fileName}_{spawner.mesh.name}_{spawner.spawnType}_{ObjectSpawner.spawnCount}.csv";
 
-        filePath = Path.Combine(Application.dataPath, "Data", $"{fileName}_{ObjectSpawner.spawnCount}.csv");
+        filePath = Path.Combine(Application.dataPath, "Data", fileName);
 
         logBuffer = new StringBuilder(1048576);
-        logBuffer.AppendLine("TotalFrame,Time,DeltaTime,FPS");
+        logBuffer.AppendLine("TotalFrame,Time,DeltaTime,FPS,RAM");
     }
 
     void Update()
@@ -40,18 +43,29 @@ public class FrameDataLogger : MonoBehaviour
             FlushBufferToDisk();
 
             if (ObjectSpawner.spawnCount >= limit)
-                return;
+            {
+                if ((int)spawner.spawnType >= 2)
+                    return;
 
-            ObjectSpawner.spawnCount += incemental;
-            SceneManager.LoadScene(0);
+                spawner.spawnType++;
+                ObjectSpawner.spawnCount = 0;
+                SceneManager.LoadScene(0);
+            }
+            else
+            {
+                ObjectSpawner.spawnCount += incemental;
+                SceneManager.LoadScene(0);
+            }
         }
         else
         {
             float currentTime = time;
             float deltaTime = Time.deltaTime;
             float fps = 1f / deltaTime;
+            long usedMemory = Profiler.GetTotalAllocatedMemoryLong();
+            float usedMegaBytes = usedMemory / 1048576f; // 1048576 bytes in a megabyte (1024*1024) according to the binary definition
 
-            logBuffer.AppendLine(string.Format(CultureInfo.InvariantCulture, "{0},{1:F4},{2:F6},{3:F2}", Time.frameCount, currentTime, deltaTime, fps));
+            logBuffer.AppendLine(string.Format(CultureInfo.InvariantCulture, "{0},{1:F4},{2:F6},{3:F2}, {4:F4}", Time.frameCount, currentTime, deltaTime, fps, usedMegaBytes));
 
         }
     }

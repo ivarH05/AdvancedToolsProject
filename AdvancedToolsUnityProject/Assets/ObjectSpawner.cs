@@ -5,12 +5,16 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEngine.Rendering.DebugUI;
 
+
+public enum SpawnType { INDIVIDUAL = 0, GPUINSTANCING = 1, COMBINED = 2 }
 public class ObjectSpawner : MonoBehaviour
 {
     public GameObject prefab;
     public Mesh mesh;
     public Material material;
     public static int spawnCount = 0;
+
+    public SpawnType spawnType;
 
     private Matrix4x4[] GPUInstances;
 
@@ -38,10 +42,18 @@ public class ObjectSpawner : MonoBehaviour
             }
         }
         loopEnd:
-
-        SetupIndividualObjects(positions);
-        //SetupGPUInstancing(positions);
-        //SetupCombinedMesh(positions);
+        switch (spawnType)
+        {
+            case SpawnType.INDIVIDUAL:
+                SetupIndividualObjects(positions);
+                break;
+            case SpawnType.COMBINED:
+                SetupCombinedMesh(positions);
+                break;
+            case SpawnType.GPUINSTANCING:
+                SetupGPUInstancing(positions);
+                break;
+        }
     }
 
     private void Update()
