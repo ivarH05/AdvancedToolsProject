@@ -27,7 +27,7 @@ public class FrameDataLogger : MonoBehaviour
             ObjectSpawner.spawnCount = startAmount;
 
         TimeOffset = Time.time;
-        fileName = $"{fileName}_{spawner.mesh.name}_{spawner.spawnType}_{ObjectSpawner.spawnCount}.csv";
+        fileName = $"{fileName}_{spawner.mesh.name}_{ObjectSpawner.spawnType}_{ObjectSpawner.spawnCount}.csv";
 
         filePath = Path.Combine(Application.dataPath, "Data", fileName);
 
@@ -44,10 +44,10 @@ public class FrameDataLogger : MonoBehaviour
 
             if (ObjectSpawner.spawnCount >= limit)
             {
-                if ((int)spawner.spawnType >= 2)
+                if ((int)ObjectSpawner.spawnType >= 2)
                     return;
 
-                spawner.spawnType++;
+                ObjectSpawner.spawnType++;
                 ObjectSpawner.spawnCount = 0;
                 SceneManager.LoadScene(0);
             }

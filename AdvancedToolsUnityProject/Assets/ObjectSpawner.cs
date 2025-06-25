@@ -14,9 +14,9 @@ public class ObjectSpawner : MonoBehaviour
     public Material material;
     public static int spawnCount = 0;
 
-    public SpawnType spawnType;
+    public static SpawnType spawnType;
 
-    private Matrix4x4[] GPUInstances;
+    private Matrix4x4[] GPUInstances = new Matrix4x4[0];
 
     // Start is called before the first frame update
     void Start()
@@ -58,7 +58,8 @@ public class ObjectSpawner : MonoBehaviour
 
     private void Update()
     {
-        //HandleGPUInstancing();
+        if(spawnType == SpawnType.GPUINSTANCING && GPUInstances.Length > 0)
+            HandleGPUInstancing();
     }
 
     void SetupCombinedMesh(Vector3[] positions)
@@ -109,6 +110,9 @@ public class ObjectSpawner : MonoBehaviour
 
     void SetupIndividualObjects(Vector3[] positions)
     {
+        prefab.GetComponent<MeshRenderer>().sharedMaterial = material;
+        prefab.GetComponent<MeshFilter>().mesh = mesh;
+
         for (int i = 0; i < positions.Length; i++)
             SummonObject(positions[i]);
     }
