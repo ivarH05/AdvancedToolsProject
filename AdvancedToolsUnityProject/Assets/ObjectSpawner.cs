@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEngine.Rendering.DebugUI;
 
+
+public enum SpawnType { INDIVIDUAL = 0, GPUINSTANCING = 1, COMBINED = 2 }
 public class ObjectSpawner : MonoBehaviour
 {
     public GameObject prefab;
@@ -12,7 +14,9 @@ public class ObjectSpawner : MonoBehaviour
     public Material material;
     public static int spawnCount = 0;
 
-    private Matrix4x4[] GPUInstances;
+    public static SpawnType spawnType;
+
+    private Matrix4x4[] GPUInstances = new Matrix4x4[0];
 
     // Start is called before the first frame update
     void Start()
@@ -38,15 +42,24 @@ public class ObjectSpawner : MonoBehaviour
             }
         }
         loopEnd:
-
-        SetupIndividualObjects(positions);
-        //SetupGPUInstancing(positions);
-        //SetupCombinedMesh(positions);
+        switch (spawnType)
+        {
+            case SpawnType.INDIVIDUAL:
+                SetupIndividualObjects(positions);
+                break;
+            case SpawnType.COMBINED:
+                SetupCombinedMesh(positions);
+                break;
+            case SpawnType.GPUINSTANCING:
+                SetupGPUInstancing(positions);
+                break;
+        }
     }
 
     private void Update()
     {
-        //HandleGPUInstancing();
+        if(spawnType == SpawnType.GPUINSTANCING && GPUInstances.Length > 0)
+            HandleGPUInstancing();
     }
 
     void SetupCombinedMesh(Vector3[] positions)
@@ -97,6 +110,9 @@ public class ObjectSpawner : MonoBehaviour
 
     void SetupIndividualObjects(Vector3[] positions)
     {
+        prefab.GetComponent<MeshRenderer>().sharedMaterial = material;
+        prefab.GetComponent<MeshFilter>().mesh = mesh;
+
         for (int i = 0; i < positions.Length; i++)
             SummonObject(positions[i]);
     }
