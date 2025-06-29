@@ -451,7 +451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 8194648447094557675, guid: e9798cb0c00fb234c84d8c536f08cab7, type: 3}
-  mesh: {fileID: -4532923877234417788, guid: 4c3350026324e0344b737b5c7f54f34f, type: 3}
+  mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   material: {fileID: 2100000, guid: 24ad923be8aab714c81d5ecba7b249df, type: 2}
 --- !u!1 &1823688464
 GameObject:
